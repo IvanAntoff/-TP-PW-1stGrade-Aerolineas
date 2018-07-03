@@ -22,22 +22,31 @@
 }
 program untitled;
 
-uses crt,sysutils,UnitArchivos;
+uses crt,sysutils,UnitArchivos,UnitMenu;
 
 var
-	NombreDelArchivoA:STRING;
+	OpcionA:integer;
+	Salir:Char;
 
 BEGIN
-	WriteLn('Ingrese el nombre de su archivo:');
-	ReadLN(NombreDelArchivoA);
-	CrearArchivo(NombreDelArchivoA);
-	readkey;
-	FileExists(NombreDelArchivoA);
-	if FileExists(NombreDelArchivoA+'.txt') then
-        writeLn('El fichero existe.')
-    else
-        writeLn('El fichero no existe.');
-	Readkey;
-	WriteLn('Oprima "enter" para finalizar.');
-	Readkey;
+	Salir:=('n');
+	while (Salir<>'s') or (Salir<>'S') do
+	begin
+		clrscr;
+		WriteLn('Opcion 1: Crear archivo.');
+		WriteLn('Opcion 2: Verificar existencia de archivo.');
+		WriteLn('Opcion 3: Leer un archivo completo.');
+		WriteLn('Opcion 4: Leer una linea de un archivo.');
+		Write('Opcion ');
+		Read(OpcionA);
+		Case OpcionA of
+			1: OpcionUno(OpcionA);
+			2: OpcionDos(OpcionA);
+			3: OpcionTres(OpcionA);
+			4: OpcionCuatro(OpcionA);
+		end;
+		WriteLn('Si decea continuar precione "Enter".');
+		WriteLn('Si decea finalizar precione "S":');
+		ReadLN(Salir)
+	end;
 END.

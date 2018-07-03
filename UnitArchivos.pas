@@ -28,9 +28,11 @@ Interface
 	uses crt,sysutils;
 
 	Procedure CrearArchivo(NombreDelArchivo:string);
-{	Procedure EliminarArchivo(NombreDelArchivo:string);}
-	Procedure EscribirArchivo(NombreDelArchivo:string);
-	Procedure VerificarArchivo(NombreDelArchivo:string);
+	{Procedure EliminarArchivo(NombreDelArchivo:string);}
+	{Procedure EscribirArchivo(NombreDelArchivo:string);}
+	Procedure LeerArchivoCompleto(NombreDelArchivo:string);
+	Procedure LeerLineaDeArchivo(Linea:string;NombreDelArchivo:string);
+	function FileExists(NombreDelArchivo: String): boolean;
 
 	//var //vars de la interface.
 
@@ -54,22 +56,49 @@ implementation
 		Erase (Aux);
 	end;
 }
-	Procedure EscribirArchivo(NombreDelArchivo:string);
+		Procedure LeerArchivoCompleto(NombreDelArchivo:string);
+		var	Archivo:text;
+				Linea:string;
 
-	begin
-
-	end;
-
-	Procedure VerificarArchivo(NombreDelArchivo:string); //Verificacion si el archivo se creo correctamente.
-
-	begin
-
-    if FileExists(NombreDelArchivo) then
-        writeLn('El archivo se creo correctamente!')
-    else
-				HighVideo;
-        writeLn('ERROR! El archivo no se pudo crear!');
+		begin
+			assign(Archivo,NombreDelArchivo+'.txt');
+			reset(Archivo);
+			while not eof(Archivo) do					// Hasta que el archivo no termine.
+			begin
+					readLn(Archivo,Linea);			// Leemos una linea.
+					writeLn(Linea);							// Mostramos la linea leida.
+			end;
+			close(Archivo);
 		end;
 
+
+		Procedure LeerLineaDeArchivo(Linea:string;NombreDelArchivo:string);
+		var Archivo:text;
+
+		begin
+			assign(Archivo,NombreDelArchivo+'.txt');
+			reset(Archivo);
+			readLn(Archivo,Linea);			// Leemos una linea.
+			writeLn(Linea);							// Mostramos la linea leida.
+			close(Archivo);
+		end;
+
+
+		function FileExists(NombreDelArchivo: String): boolean;
+		var Archivo:text;
+
+			begin
+				assign(Archivo,NombreDelArchivo);
+    		{$I-}
+    		reset(Archivo);
+    		{$I+}
+    		if (IOResult = 0) then
+    		begin
+        	close(Archivo);
+        	FileExists:=true;
+    		end
+    			else
+        		FileExists:=false;
+					end;
 BEGIN
 END.
